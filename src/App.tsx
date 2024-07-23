@@ -1,7 +1,16 @@
+import { useEffect } from 'react'
+import useGetDepartments from './api/hooks/useGetDepartments'
+
 function App() {
+  const { data } = useGetDepartments()
+
+  useEffect(() => {
+    console.log(data)
+  }, [data])
+
   return (
     <>
-      <h1>hello world!</h1>
+      <h1>Hello World</h1>
     </>
   )
 }
