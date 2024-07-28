@@ -5,7 +5,7 @@ import axiosInstance from '../axios/axiosInstance'
 
 const departmentsSchema = z.array(
   z.object({
-    id: z.number(),
+    id: z.string(),
     name: z.string(),
     description: z.string(),
     datasets: z.number(),
@@ -14,7 +14,7 @@ const departmentsSchema = z.array(
 
 export type Departments = z.infer<typeof departmentsSchema>
 
-const fetchDepartments = async (): Promise<Departments> => {
+const fetchDepartments = async () => {
   const response = await axiosInstance.get('/departments')
 
   const parsedData = departmentsSchema.safeParse(response.data)
@@ -25,12 +25,32 @@ const fetchDepartments = async (): Promise<Departments> => {
     throw new Error('Invalid response format')
   }
 
-  return response.data
+  const sortedData = [...parsedData.data].sort(
+    (a, b) => b.datasets - a.datasets
+  )
+
+  // Step 2: Assign ranks without gaps
+  let rank = 1
+  let previousNumberOfDepartments = sortedData[0].datasets
+
+  return sortedData.map(department => {
+    // If the current number of departments is different from the previous one
+    if (department.datasets !== previousNumberOfDepartments) {
+      rank = rank + 1
+    }
+    previousNumberOfDepartments = department.datasets
+
+    return { ...department, rank }
+  })
 }
+
+export type DepartmentsTypeWithRankType = Awaited<
+  ReturnType<typeof fetchDepartments>
+>
 
 // Create the custom hook
 const useGetDepartments = () => {
-  return useQuery<Departments, Error>({
+  return useQuery<DepartmentsTypeWithRankType, Error>({
     queryKey: [queryKeys.DEPARTMENTS],
     queryFn: fetchDepartments,
   })
