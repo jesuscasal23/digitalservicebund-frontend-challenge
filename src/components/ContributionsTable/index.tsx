@@ -23,47 +23,43 @@ const ContributionsTable = ({
     useState(0)
 
   useEffect(() => {
-    // Step 1: Get the total amount of contributions
     if (!departments) {
       return
     }
 
+    // Step 1: Get the total amount of contributions
     const totalAmount = departments.reduce((acc, department) => {
       return acc + department.datasets
     }, 0)
+    setTotalAmountOfContributions(totalAmount)
 
     // Step 2: Add the rank to the departments
     const departmentsStatsWithRank = addRankToDepartments(departments)
 
-    setTotalAmountOfContributions(totalAmount)
-    setfilteredAndRankedDepartments(departmentsStatsWithRank)
-  }, [departments])
-
-  useEffect(() => {
-    if (!filteredAndRankedDepartments) {
-      return
-    }
-
-    let filteredDepartments = filteredAndRankedDepartments
+    let departmentsafterFilteringAndRanking = departmentsStatsWithRank
 
     // Step 3: Filter the departments by name
     if (nameFilter) {
-      filteredDepartments = filteredDepartments.filter(department => {
-        return department.name.toLowerCase().includes(nameFilter.toLowerCase())
-      })
+      departmentsafterFilteringAndRanking =
+        departmentsafterFilteringAndRanking.filter(department => {
+          return department.name
+            .toLowerCase()
+            .includes(nameFilter.toLowerCase())
+        })
     }
 
     console.log(minContributionsFilter)
 
     // Step 4: Filter the departments by contributions
     if (minContributionsFilter && !isNaN(minContributionsFilter)) {
-      filteredDepartments = filteredDepartments.filter(department => {
-        return department.datasets >= minContributionsFilter
-      })
+      departmentsafterFilteringAndRanking =
+        departmentsafterFilteringAndRanking.filter(department => {
+          return department.datasets >= minContributionsFilter
+        })
     }
 
-    setfilteredAndRankedDepartments(filteredDepartments)
-  }, [filteredAndRankedDepartments, minContributionsFilter, nameFilter])
+    setfilteredAndRankedDepartments(departmentsafterFilteringAndRanking)
+  }, [departments, minContributionsFilter, nameFilter])
 
   if (isLoading || filteredAndRankedDepartments.length === 0) {
     return <div>Loading...</div>
