@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 type InputProps = {
   type: 'text' | 'number'
-  placeholder: string
+  placeholder?: string
   name: string
   value: string | number
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void

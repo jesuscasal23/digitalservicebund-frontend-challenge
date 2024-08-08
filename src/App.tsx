@@ -40,7 +40,6 @@ function App() {
               <Input
                 name='contributions'
                 type='number'
-                placeholder='Min. contributions'
                 extraClasses='mr-4'
                 value={minContributionsSearch}
                 onChange={handleSetMinContributionsSearch}
@@ -49,7 +48,10 @@ function App() {
           </div>
 
           <main>
-            <ContributionsTable />
+            <ContributionsTable
+              minContributionsFilter={minContributionsSearch}
+              nameFilter={nameSearch}
+            />
           </main>
         </div>
       </div>

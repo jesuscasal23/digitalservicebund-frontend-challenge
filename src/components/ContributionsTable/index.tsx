@@ -6,7 +6,15 @@ import useGetDepartments, {
 import { addRankToDepartments } from './helpers'
 import StatBar from './StatBar'
 
-const ContributionsTable = () => {
+type ContributionsTableProps = {
+  minContributionsFilter: number
+  nameFilter: string
+}
+
+const ContributionsTable = ({
+  minContributionsFilter,
+  nameFilter,
+}: ContributionsTableProps) => {
   const { data: departments, isLoading } = useGetDepartments()
 
   const [filteredDepartments, setFilteredDepartments] =
@@ -24,8 +32,26 @@ const ContributionsTable = () => {
     // Step 2: Add the rank to the departments
     const departmentsStatsWithRank = addRankToDepartments(departments)
 
-    setFilteredDepartments(departmentsStatsWithRank)
-  }, [departments])
+    let filteredDepartments = departmentsStatsWithRank
+
+    // Step 3: Filter the departments by name
+    if (nameFilter) {
+      filteredDepartments = filteredDepartments.filter(department => {
+        return department.name.toLowerCase().includes(nameFilter.toLowerCase())
+      })
+    }
+
+    console.log(minContributionsFilter)
+
+    // Step 4: Filter the departments by contributions
+    if (minContributionsFilter && !isNaN(minContributionsFilter)) {
+      filteredDepartments = filteredDepartments.filter(department => {
+        return department.datasets >= minContributionsFilter
+      })
+    }
+
+    setFilteredDepartments(filteredDepartments)
+  }, [departments, minContributionsFilter, nameFilter])
 
   if (isLoading || filteredDepartments.length === 0) {
     return <div>Loading...</div>
@@ -55,7 +81,7 @@ const ContributionsTable = () => {
                     <th
                       scope='col'
                       className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'>
-                      Ranking
+                      Contributions Ranking
                     </th>
 
                     <th

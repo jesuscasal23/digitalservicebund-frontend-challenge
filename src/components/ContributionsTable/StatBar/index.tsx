@@ -21,7 +21,6 @@ const StatBar = ({ currentNumber, maximumNumber }: StatBarProps) => {
       return
     }
     setPercentage((currentNumber / maximumNumber) * 100)
-    console.log(percentage)
   }, [currentNumber, maximumNumber, percentage])
 
   return <StyledBar $widthPercentage={percentage} />
