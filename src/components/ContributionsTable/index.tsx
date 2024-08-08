@@ -1,14 +1,16 @@
-import DepartmentRowWithElipsis from '../DepartmentRowWithElipsis'
 import { useEffect, useState } from 'react'
-import useGetDepartments from '../../api/hooks/useGetDepartments'
+import DepartmentRowWithElipsis from '../DepartmentRowWithElipsis'
+import useGetDepartments, {
+  type DepartmentsTypeWithRank,
+} from '../../api/hooks/useGetDepartments'
+import { addRankToDepartments } from './helpers'
 import StatBar from '../StatBar'
 
 const ContributionsTable = () => {
   const { data: departments, isLoading } = useGetDepartments()
 
-  const [filteredDepartments, setFilteredDepartments] = useState<
-    typeof departments
-  >([])
+  const [filteredDepartments, setFilteredDepartments] =
+    useState<DepartmentsTypeWithRank>([])
   const [maximumNumber, setMaximumNumber] = useState(0)
 
   useEffect(() => {
@@ -16,32 +18,16 @@ const ContributionsTable = () => {
       return
     }
 
-    const numbers = departments.map(department => department.datasets)
     // Step 1: Set the maximum number for the StatBar component
+    const numbers = departments.map(department => department.datasets)
     setMaximumNumber(Math.max(...numbers))
+    // Step 2: Add the rank to the departments
+    const departmentsStatsWithRank = addRankToDepartments(departments)
 
-    // Step 2: Sort the data by the number of datasets
-    const sortedData = [...departments].sort((a, b) => b.datasets - a.datasets)
-
-    // Step 3: Assign ranks to the departments
-    let rank = 1
-    let previousNumberOfDepartments = sortedData[0].datasets
-
-    const departmentStatsWithRank = sortedData.map(department => {
-      // If the current number of departments is different from the previous one
-      if (department.datasets !== previousNumberOfDepartments) {
-        rank = rank + 1
-      }
-      previousNumberOfDepartments = department.datasets
-
-      return { ...department, rank }
-    })
-
-    // Step 4: Set the filtered departments for display
-    setFilteredDepartments(departmentStatsWithRank)
+    setFilteredDepartments(departmentsStatsWithRank)
   }, [departments])
 
-  if (isLoading) {
+  if (isLoading || filteredDepartments.length === 0) {
     return <div>Loading...</div>
   }
 

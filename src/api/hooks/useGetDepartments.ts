@@ -12,7 +12,12 @@ const departmentsSchema = z.array(
   })
 )
 
-export type Departments = z.infer<typeof departmentsSchema>
+export type DepartmentsType = z.infer<typeof departmentsSchema>
+export type DepartmentsTypeWithRank = Array<
+  DepartmentsType[number] & {
+    rank: number
+  }
+>
 
 const fetchDepartments = async () => {
   const response = await axiosInstance.get('/departments')
@@ -28,13 +33,9 @@ const fetchDepartments = async () => {
   return parsedData.data
 }
 
-export type DepartmentsTypeWithRankType = Awaited<
-  ReturnType<typeof fetchDepartments>
->
-
 // Create the custom hook
 const useGetDepartments = () => {
-  return useQuery<DepartmentsTypeWithRankType, Error>({
+  return useQuery<DepartmentsType, Error>({
     queryKey: [queryKeys.DEPARTMENTS],
     queryFn: fetchDepartments,
   })
