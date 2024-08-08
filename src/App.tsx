@@ -20,10 +20,11 @@ function App() {
   return (
     <>
       <Navbar />
+
       <div className='min-h-full'>
         <div className='py-10'>
           <div className='flex mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 justify-between'>
-            <h1 className='text-3xl font-bold leading-tight tracking-tight text-gray-900'>
+            <h1 className='text-3xl font-bold leading-tight tracking-tight text-gray-900 ml-7'>
               Dashboard
             </h1>
             <div className='flex justify-end'>

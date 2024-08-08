@@ -5,6 +5,7 @@ import {
 } from '@headlessui/react'
 import NAVIGATION from '../../constants/navigation'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import DigitalServiceSVG from '../../assets/digitalService.svg'
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -16,13 +17,11 @@ const Navbar = () => {
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='flex h-16 justify-between'>
           <div className='flex'>
-            <div className='flex flex-shrink-0 items-center'>
-              <img
-                alt='Your Company'
-                src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
-                className='block h-8 w-auto'
-              />
-            </div>
+            <img
+              src={DigitalServiceSVG}
+              alt='Digital Service'
+              className='h-full'
+            />
             <div className='hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8'>
               {NAVIGATION.map(item => (
                 <a
