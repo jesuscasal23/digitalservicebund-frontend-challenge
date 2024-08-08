@@ -17,22 +17,34 @@ const ContributionsTable = ({
 }: ContributionsTableProps) => {
   const { data: departments, isLoading } = useGetDepartments()
 
-  const [filteredDepartments, setFilteredDepartments] =
+  const [filteredAndRankedDepartments, setfilteredAndRankedDepartments] =
     useState<DepartmentsTypeWithRank>([])
-  const [maximumNumber, setMaximumNumber] = useState(0)
+  const [totalAmountOfContributions, setTotalAmountOfContributions] =
+    useState(0)
 
   useEffect(() => {
+    // Step 1: Get the total amount of contributions
     if (!departments) {
       return
     }
 
-    // Step 1: Set the maximum number for the StatBar component
-    const numbers = departments.map(department => department.datasets)
-    setMaximumNumber(Math.max(...numbers))
+    const totalAmount = departments.reduce((acc, department) => {
+      return acc + department.datasets
+    }, 0)
+
     // Step 2: Add the rank to the departments
     const departmentsStatsWithRank = addRankToDepartments(departments)
 
-    let filteredDepartments = departmentsStatsWithRank
+    setTotalAmountOfContributions(totalAmount)
+    setfilteredAndRankedDepartments(departmentsStatsWithRank)
+  }, [departments])
+
+  useEffect(() => {
+    if (!filteredAndRankedDepartments) {
+      return
+    }
+
+    let filteredDepartments = filteredAndRankedDepartments
 
     // Step 3: Filter the departments by name
     if (nameFilter) {
@@ -50,10 +62,10 @@ const ContributionsTable = ({
       })
     }
 
-    setFilteredDepartments(filteredDepartments)
-  }, [departments, minContributionsFilter, nameFilter])
+    setfilteredAndRankedDepartments(filteredDepartments)
+  }, [filteredAndRankedDepartments, minContributionsFilter, nameFilter])
 
-  if (isLoading || filteredDepartments.length === 0) {
+  if (isLoading || filteredAndRankedDepartments.length === 0) {
     return <div>Loading...</div>
   }
 
@@ -87,12 +99,12 @@ const ContributionsTable = ({
                     <th
                       scope='col'
                       className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'>
-                      Proportion
+                      % of total contributions
                     </th>
                   </tr>
                 </thead>
                 <tbody className='divide-y divide-gray-200'>
-                  {filteredDepartments.map(department => (
+                  {filteredAndRankedDepartments.map(department => (
                     <tr key={department.id}>
                       <DepartmentRowWithElipsis department={department} />
                       <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
@@ -104,7 +116,7 @@ const ContributionsTable = ({
                       <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                         <StatBar
                           currentNumber={department.datasets}
-                          maximumNumber={maximumNumber}
+                          maximumNumber={totalAmountOfContributions}
                         />
                       </td>
                     </tr>

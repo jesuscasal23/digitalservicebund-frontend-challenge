@@ -21,9 +21,15 @@ const StatBar = ({ currentNumber, maximumNumber }: StatBarProps) => {
       return
     }
     setPercentage((currentNumber / maximumNumber) * 100)
+    console.log((currentNumber / maximumNumber) * 100)
   }, [currentNumber, maximumNumber, percentage])
 
-  return <StyledBar $widthPercentage={percentage} />
+  return (
+    <div className='flex align-middle'>
+      <StyledBar $widthPercentage={percentage} />
+      <p className='ml-2'>{percentage.toFixed(2)}%</p>
+    </div>
+  )
 }
 
 export default StatBar
