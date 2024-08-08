@@ -3,6 +3,7 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from '@headlessui/react'
+import NAVIGATION from '../../constants/navigation'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 function classNames(...classes: string[]) {
@@ -10,11 +11,6 @@ function classNames(...classes: string[]) {
 }
 
 const Navbar = () => {
-  const navigation = [
-    { name: 'Dashboard', href: '#', current: true },
-    { name: 'About Me', href: '#', current: false },
-  ]
-
   return (
     <Disclosure as='nav' className='border-b border-gray-200 bg-white'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
@@ -28,7 +24,7 @@ const Navbar = () => {
               />
             </div>
             <div className='hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8'>
-              {navigation.map(item => (
+              {NAVIGATION.map(item => (
                 <a
                   key={item.name}
                   href={item.href}
@@ -65,7 +61,7 @@ const Navbar = () => {
 
       <DisclosurePanel className='sm:hidden'>
         <div className='space-y-1 pb-3 pt-2'>
-          {navigation.map(item => (
+          {NAVIGATION.map(item => (
             <DisclosureButton
               key={item.name}
               as='a'

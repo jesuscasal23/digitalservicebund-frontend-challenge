@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { DepartmentsTypeWithRankType } from '../api/hooks/useGetDepartments'
+import { DepartmentsTypeWithRankType } from '../../api/hooks/useGetDepartments'
 
 const DepartmentRowWithElipsis = ({
   department,

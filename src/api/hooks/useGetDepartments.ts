@@ -25,23 +25,7 @@ const fetchDepartments = async () => {
     throw new Error('Invalid response format')
   }
 
-  const sortedData = [...parsedData.data].sort(
-    (a, b) => b.datasets - a.datasets
-  )
-
-  // Step 2: Assign ranks without gaps
-  let rank = 1
-  let previousNumberOfDepartments = sortedData[0].datasets
-
-  return sortedData.map(department => {
-    // If the current number of departments is different from the previous one
-    if (department.datasets !== previousNumberOfDepartments) {
-      rank = rank + 1
-    }
-    previousNumberOfDepartments = department.datasets
-
-    return { ...department, rank }
-  })
+  return parsedData.data
 }
 
 export type DepartmentsTypeWithRankType = Awaited<
