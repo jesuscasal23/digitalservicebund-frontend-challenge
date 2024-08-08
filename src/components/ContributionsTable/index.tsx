@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import DepartmentRowWithElipsis from '../DepartmentRowWithElipsis'
+import DepartmentRowWithElipsis from './DepartmentRowWithElipsis'
 import useGetDepartments, {
   type DepartmentsTypeWithRank,
 } from '../../api/hooks/useGetDepartments'
 import { addRankToDepartments } from './helpers'
-import StatBar from '../StatBar'
+import StatBar from './StatBar'
 
 const ContributionsTable = () => {
   const { data: departments, isLoading } = useGetDepartments()

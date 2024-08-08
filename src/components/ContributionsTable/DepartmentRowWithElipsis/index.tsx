@@ -1,10 +1,10 @@
 import { useRef, useState, useEffect } from 'react'
-import { DepartmentsTypeWithRankType } from '../../api/hooks/useGetDepartments'
+import { DepartmentsTypeWithRank } from '../../../api/hooks/useGetDepartments'
 
 const DepartmentRowWithElipsis = ({
   department,
 }: {
-  department: DepartmentsTypeWithRankType[number]
+  department: DepartmentsTypeWithRank[number]
 }) => {
   const textRef = useRef(null)
   const [isOverflowing, setIsOverflowing] = useState(false)

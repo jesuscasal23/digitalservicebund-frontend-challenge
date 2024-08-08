@@ -3,9 +3,9 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from '@headlessui/react'
-import NAVIGATION from '../../constants/navigation'
+import NAVIGATION from '@/constants/navigation'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import DigitalServiceSVG from '../../assets/digitalService.svg'
+import DigitalServiceSVG from '@/assets/digitalService.svg'
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
