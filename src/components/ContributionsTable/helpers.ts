@@ -1,6 +1,8 @@
 import { type DepartmentsType } from '../../api/hooks/useGetDepartments'
 
 export const addRankToDepartments = (departments: DepartmentsType) => {
+  if (Array.isArray(departments) && departments.length === 0) return []
+
   const sortedDepartmentsByDataset = [...departments].sort(
     (a, b) => b.datasets - a.datasets
   )
